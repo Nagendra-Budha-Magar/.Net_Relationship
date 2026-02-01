@@ -32,10 +32,35 @@ namespace practicing.Controllers
             return Ok("Added Successfully");
         }
 
+        [HttpPost("Link_Semester")]
+        public async Task<IActionResult> LinkSemester(int studentId, int semesterId)
+        {
+            var student = await _context.Students.FindAsync(studentId);
+            var semester = await _context.Semesters.FindAsync(semesterId);
+
+            if(studentId == null ||  semesterId == null){
+                return NotFound("Student or Semester not Found");
+            }
+            student.semester = semester;
+            await _context.SaveChangesAsync();
+
+            return Ok("Student assigned to Semester successfully");
+        }
+
         [HttpGet]
         public async Task<IActionResult> Getall()
         {
-            var result = await _context.Students.ToListAsync();
+            var result = await _context.Students
+                .Include(s => s.semester)
+                .Select(s => new StudentDtoRead
+                {
+                    Name = s.Name,
+                    Semester = s.semester == null ? null : new SemesterDto
+                    {
+                        Name = s.semester.Name
+                    }
+                })
+                .ToListAsync();
             //var data = await _context.Students
             //    .Select(s => new StudentDto
             //    {
@@ -44,44 +69,34 @@ namespace practicing.Controllers
             //    })
             //    .ToListAsync();
 
-            //if (!data.Any())
-            //    return NotFound();
-            
+            if (!result.Any())
+                return NotFound();
+
 
             return Ok(result);
         }
 
 
-        //[HttpGet]
-        //[Route("{Id:int}")]
+        [HttpGet("{Id:int}")]
+        public async Task<IActionResult> GetStudentById(int Id)
+        {
+            var student = await _context.Students
+                .Where(s => s.Id == Id)
+                .Select(s => new StudentDtoRead
+                {
+                    Name = s.Name,
+                    Semester = new SemesterDto
+                    {
+                        Name = s.semester.Name
+                    }
+                })
+                .FirstOrDefaultAsync();
 
-        //public async Task<IActionResult> GetInfoById(int Id)
-        //{
-        //    var SInfo = await _context.Students.Include(x => x.semester)
-        //        .FirstOrDefaultAsync();
-        //    if (SInfo is null)
-        //    {
-        //        return NotFound();
-        //    }
-        //    return Ok(SInfo);
-        //}
-        //[HttpGet("{Id:int}")]
-        //public async Task<IActionResult> GetInfoById(int Id)
-        //{
-        //    var SInfo = await _context.Students
-        //        .Where(s => s.Id == Id)
-        //        .Select(s => new
-        //        {
-        //            s.Name,
-        //            Semesters = s.semester
-        //        }
-        //        .FirstOrDefaultAsync();
+            if (student == null)
+                return NotFound();
 
-        //    if (SInfo is null)
-        //        return NotFound();
-
-        //    return Ok(SInfo);
-        //}
+            return Ok(student);
+        }
 
 
         [HttpDelete]
