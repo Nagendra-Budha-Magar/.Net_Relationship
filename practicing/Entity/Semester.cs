@@ -8,8 +8,8 @@ namespace practicing.Entity
         [Required]
         public  string Name { get; set; }
 
-        public ICollection<Student>? student { get; set; }
-        public ICollection<Semester_Subject>? join { get; set; }
+        //public ICollection<Student>? student { get; set; }
+        public ICollection<AssignSubject>? join { get; set; }
 
     }
 }

@@ -1,6 +1,6 @@
 ﻿namespace practicing.Dtos
 {
-    public class Semester_SubjectDto
+    public class AssignSubjectDto
     {
         public int? semesterId { get; set; }
         public int? subjectId { get; set; }

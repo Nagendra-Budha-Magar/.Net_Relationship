@@ -58,6 +58,7 @@ namespace practicing.Controllers
                     Semester = s.semester == null ? null : new SemesterDto
                     {
                         Name = s.semester.Name
+                        
                     }
                 })
                 .ToListAsync();
@@ -80,17 +81,28 @@ namespace practicing.Controllers
         [HttpGet("{Id:int}")]
         public async Task<IActionResult> GetStudentById(int Id)
         {
-            var student = await _context.Students
-                .Where(s => s.Id == Id)
-                .Select(s => new StudentDtoRead
-                {
-                    Name = s.Name,
-                    Semester = new SemesterDto
-                    {
-                        Name = s.semester.Name
-                    }
-                })
-                .FirstOrDefaultAsync();
+            //var student = await _context.Students
+            //    .Where(s => s.Id == Id)
+            //    .Select(s => new StudentDtoRead
+            //    {
+            //        Name = s.Name,
+            //        Semester = new SemesterDto
+            //        {
+            //            Name = s.semester.Name,
+
+            //        }
+
+
+            //    })
+            //    .FirstOrDefaultAsync();
+
+            var student =await  _context.Students
+                .Include(x => x.semester)
+                .ThenInclude(x=> x.join)
+                .ThenInclude( x => x.subject)
+                 .FirstOrDefaultAsync();
+
+
 
             if (student == null)
                 return NotFound();

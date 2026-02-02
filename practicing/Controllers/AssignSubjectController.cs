@@ -9,16 +9,16 @@ namespace practicing.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class Semester_SubjectController : ControllerBase
+    public class AssignSubjectController : ControllerBase
     {
         private readonly AppDbContext _context;
-        public Semester_SubjectController(AppDbContext DbContext)
+        public AssignSubjectController(AppDbContext DbContext)
         {
             _context = DbContext;
         }
 
         [HttpPost]
-        public async Task<IActionResult> Add(Semester_SubjectDto dto)
+        public async Task<IActionResult> Add(AssignSubjectDto dto)
         {
             // Check if both exist
             var semesterExists = await _context.Semesters.AnyAsync(s => s.Id == dto.semesterId);
@@ -28,7 +28,7 @@ namespace practicing.Controllers
             {
                 return BadRequest("Invalid Semester or Subject ID.");
             }
-            var link = new Semester_Subject
+            var link = new AssignSubject
             {
                 semesterId = dto.semesterId,
                 subjectId = dto.subjectId
