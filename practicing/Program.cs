@@ -1,5 +1,6 @@
 
 using Microsoft.EntityFrameworkCore;
+using practicing.Application.Services;
 using practicing.Data;
 
 namespace practicing
@@ -18,7 +19,8 @@ namespace practicing
             builder.Services.AddSwaggerGen();
             builder.Services.AddDbContext<AppDbContext>(options =>
             options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
-            
+
+            builder.Services.AddScoped<IStudentService, StudentService>();
 
             var app = builder.Build();
 
