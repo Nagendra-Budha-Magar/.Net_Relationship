@@ -1,5 +1,6 @@
 
 using Microsoft.EntityFrameworkCore;
+using practicing.Application.Repositories;
 using practicing.Application.Services;
 using practicing.Data;
 
@@ -21,6 +22,9 @@ namespace practicing
             options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
             builder.Services.AddScoped<IStudentService, StudentService>();
+            builder.Services.AddScoped<IAssignSubjectService, AssignSubjectService>();
+            builder.Services.AddScoped<IAssignSubjectRepository, AssignSubjectRepository>();
+            builder.Services.AddScoped<IStudentRepository, StudentRepository>();
 
             var app = builder.Build();
 

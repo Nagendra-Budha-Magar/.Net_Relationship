@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore;
+using practicing.Application.Repositories;
 using practicing.Data;
 using practicing.Domain.Dtos;
 using practicing.Domain.Entity;
@@ -8,20 +9,20 @@ namespace practicing.Application.Services
 {
     public class AssignSubjectService : IAssignSubjectService
     {
-        private readonly AppDbContext _context;
+        private readonly IAssignSubjectRepository _repository;
 
-        public AssignSubjectService(AppDbContext context)
+        public AssignSubjectService(IAssignSubjectRepository repository)
         {
-            _context = context;
+            _repository = repository;
         }
 
         public async Task<bool> AssignSubject(AssignSubjectDto dto)
         {
-            var subjectExit = await _context.Subjects.AnyAsync(s => s.Id == dto.subjectId);
-            var semesterExit = await _context.Semesters.AnyAsync(s => s.Id == dto.semesterId);
+            var subjectExist = await _repository.SubjectExists(dto.subjectId);
+            var semesterExist = await _repository.SemesterExists(dto.semesterId);
 
             //  checking if both exist
-            if (!subjectExit || !semesterExit)
+            if (!subjectExist || !semesterExist)
             {
                 return false;
             }
@@ -31,8 +32,10 @@ namespace practicing.Application.Services
                 subjectId = dto.subjectId,
                 semesterId = dto.semesterId
             };
-            _context.AssignSubjects.Add(link);
-            await _context.SaveChangesAsync();
+
+            await _repository.AssignSubject(link);
+            //_context.AssignSubjects.Add(link);
+            //await _context.SaveChangesAsync();
 
             return true;
         }

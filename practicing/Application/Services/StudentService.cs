@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using practicing.Application.Repositories;
 using practicing.Data;
 using practicing.Domain.Dtos;
 using practicing.Domain.Entity;
@@ -8,11 +9,11 @@ namespace practicing.Application.Services
 {
     public class StudentService : IStudentService
     {
-        private readonly AppDbContext _context;
+        private readonly IStudentRepository _repository;
 
-        public StudentService(AppDbContext dbContext)
+        public StudentService(IStudentRepository repository)
         {
-            _context = dbContext;
+            _repository = repository;
         }
 
         public async Task<StudentDto> InsertStudent(StudentDto dto)
@@ -22,8 +23,9 @@ namespace practicing.Application.Services
                 Name = dto.Name,
                 semesterId = dto.semesterId
             };
-            _context.Students.Add(SInfo);
-            await _context.SaveChangesAsync();
+            await _repository.InsertStudent(SInfo);
+            //_context.Students.Add(SInfo);
+            //await _context.SaveChangesAsync();
 
             var result = new StudentDto
             {
@@ -34,22 +36,14 @@ namespace practicing.Application.Services
         }
         public async Task<bool> LinkSemester(int studentId, int semesterId)
         {
-            var student = await _context.Students.FindAsync(studentId);
-            var semester = await _context.Semesters.FindAsync(semesterId);
-
-            if (student == null || semester == null)
-            {
-                return false;
-            }
-            student.semester = semester;
-            await _context.SaveChangesAsync();
+            await _repository.UpdateSemester(studentId,semesterId);         
 
             return true;
         }
 
-        public async Task<List<StudentDtoRead>> GetAllAsync()
+        public async Task<IEnumerable<StudentDtoRead>> GetAllAsync()
         {
-            var result = await _context.Students
+            var result = await _repository.GetAll()
                 .Include(s => s.semester)
                 .ThenInclude(j => j.join)
                 .ThenInclude(s => s.subject)
@@ -60,10 +54,10 @@ namespace practicing.Application.Services
                     {
                         Name = s.semester.Name,
                         subjects = s.semester.join.Select(j => new SubjectDto
-                    {
-                        Name = j.subject.Name,
-                        Description = j.subject.Description
-                    }).ToList()
+                        {
+                            Name = j.subject.Name,
+                            Description = j.subject.Description
+                        }).ToList()
                     }
                 })
             .ToListAsync();
@@ -71,10 +65,12 @@ namespace practicing.Application.Services
             return result;
         }
 
-        public async Task<StudentDtoRead> GetStudentById(int Id)
+        public async Task<StudentDtoRead?> GetStudentById(int Id)
         {
-            var student = await _context.Students
-                .Where(s => s.Id ==Id)
+            var student = await _repository.GetById(Id)
+                .Include(s => s.semester)
+                .ThenInclude(j => j.join)
+                .ThenInclude(s => s.subject)
                 .Select(s => new StudentDtoRead
                 {
                     Name = s.Name,
@@ -94,13 +90,8 @@ namespace practicing.Application.Services
 
         public async Task<bool> DeleteStudent(int Id)
         {
-            var student = await _context.Students.FindAsync(Id);
-            if (student is null)
-                return false;
-            _context.Students.Remove(student);
-            await _context.SaveChangesAsync();
+            return await _repository.DeleteStudent(Id);
 
-            return true;
         }
     }
 }

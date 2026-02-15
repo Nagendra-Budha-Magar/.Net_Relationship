@@ -1,8 +1,10 @@
-﻿namespace practicing.Domain.Dtos
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace practicing.Domain.Dtos
 {
     public class AssignSubjectDto
     {
-        public int? semesterId { get; set; }
-        public int? subjectId { get; set; }
+        public int semesterId { get; set; }
+        public int subjectId { get; set; }
     }
 }

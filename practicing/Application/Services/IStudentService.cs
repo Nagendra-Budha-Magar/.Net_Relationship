@@ -9,8 +9,8 @@ namespace practicing.Application.Services
     {
         Task<StudentDto> InsertStudent(StudentDto dto);
         Task<bool> LinkSemester(int studentId, int semesterId);
-        Task<List<StudentDtoRead>> GetAllAsync();
-        Task<StudentDtoRead> GetStudentById(int Id);
+        Task<IEnumerable<StudentDtoRead>> GetAllAsync();
+        Task<StudentDtoRead?> GetStudentById(int Id);
         Task<bool> DeleteStudent(int Id);
     }
 }
