@@ -1,5 +1,6 @@
 
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using practicing.Application.Repositories;
@@ -19,6 +20,11 @@ namespace practicing
 
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+
+            // Register IdentityUser and Role
+            builder.Services.AddIdentity<IdentityUser, IdentityRole>()
+                .AddEntityFrameworkStores<AppDbContext>()
+                .AddDefaultTokenProviders();
 
             // Register the "Security Rules"
             builder.Services.AddAuthentication(options =>
@@ -65,6 +71,8 @@ namespace practicing
 
             app.UseHttpsRedirection();
 
+            // The order here is critical!
+            app.UseAuthentication();
             app.UseAuthorization();
 
 
