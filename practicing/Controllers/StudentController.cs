@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Components.Forms;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -41,6 +42,8 @@ namespace practicing.Controllers
             return Ok("Student assigned to Semester successfully");
         }
 
+        // Testing for jwt authentication
+        [Authorize]
         [HttpGet]
         public async Task<IActionResult> Getall()
         {
@@ -61,20 +64,6 @@ namespace practicing.Controllers
                 return NotFound();
             return Ok(student);
         }
-
-        //[HttpDelete]
-        //[Route("{Id:int}")]
-
-        //public async Task<IActionResult> Delete(int Id)
-        //{
-        //    var student = await _context.Students.FindAsync(Id);
-        //    if (student is null)
-        //        return NotFound();
-        //    _context.Students.Remove(student);
-        //    await _context.SaveChangesAsync();
-
-        //    return Ok("Deleted Successfully");
-        //}
 
         [HttpDelete]
         [Route("{Id:int}")]

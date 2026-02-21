@@ -51,14 +51,17 @@ namespace practicing
 
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+
+            // Add DbContext with SQL Server
             builder.Services.AddDbContext<AppDbContext>(options =>
             options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-            // Register Services and Register
+            // Register Services and Register            
             builder.Services.AddScoped<IStudentService, StudentService>();
             builder.Services.AddScoped<IAssignSubjectService, AssignSubjectService>();
             builder.Services.AddScoped<IAssignSubjectRepository, AssignSubjectRepository>();
             builder.Services.AddScoped<IStudentRepository, StudentRepository>();
+            builder.Services.AddScoped<IAuthService, AuthService>();
 
             var app = builder.Build();
 
