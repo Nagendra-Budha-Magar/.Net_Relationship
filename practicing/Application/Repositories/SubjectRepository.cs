@@ -18,5 +18,11 @@ namespace practicing.Application.Repositories
             await _context.SaveChangesAsync();
             return entity;
         }
+
+        public async Task<Subject> GetById(int Id)
+        {
+            return  await _context.Subjects.FindAsync(Id);
+
+        }
     }
 }

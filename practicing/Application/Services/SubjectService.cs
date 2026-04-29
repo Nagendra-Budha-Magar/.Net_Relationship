@@ -25,5 +25,18 @@ namespace practicing.Application.Services
 
             return dto;
         }
+
+        public async Task<SubjectDto> GetById(int Id)
+        {
+            var Result = await _repository.GetById(Id);
+                if (Result == null) throw new KeyNotFoundException("Subject not found!");
+
+            var subject = new SubjectDto
+            {
+                Name = Result.Name,
+                Description = Result.Description
+            };
+            return subject;
+        }
     }
 }

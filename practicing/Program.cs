@@ -59,8 +59,10 @@ namespace practicing
             // Register Services and Register            
             builder.Services.AddScoped<IStudentService, StudentService>();
             builder.Services.AddScoped<IAssignSubjectService, AssignSubjectService>();
+            builder.Services.AddScoped<ISubjectService, SubjectService>();
             builder.Services.AddScoped<IAssignSubjectRepository, AssignSubjectRepository>();
             builder.Services.AddScoped<IStudentRepository, StudentRepository>();
+            builder.Services.AddScoped<ISubjectRepository, SubjectRepository>();
             builder.Services.AddScoped<IAuthService, AuthService>();
 
             var app = builder.Build();

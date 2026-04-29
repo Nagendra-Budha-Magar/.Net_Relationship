@@ -25,17 +25,13 @@ namespace practicing.Controllers
             return Ok(result);
         }
 
-        //[HttpGet]
-        //[Route("{Id:int}")]
-        //public async Task<IActionResult> GetSubject(int Id)
-        //{
-        //    var data = await _context.Subjects.FirstOrDefaultAsync();
-        //    if(data is null)
-        //    {
-        //        return NotFound();
-        //    }
-        //    return Ok(data);
-        //}
+        [HttpGet]
+        [Route("{Id:int}")]
+        public async Task<IActionResult> GetSubject(int Id)
+        {
+            var result = await _service.GetById(Id);
+            return Ok(result);
+        }
 
 
         //[HttpDelete]
