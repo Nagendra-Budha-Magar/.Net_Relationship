@@ -5,7 +5,7 @@
 namespace practicing.Migrations
 {
     /// <inheritdoc />
-    public partial class secondtest : Migration
+    public partial class Secondtest : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

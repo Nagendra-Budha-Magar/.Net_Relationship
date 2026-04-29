@@ -5,6 +5,7 @@ namespace practicing.Application.Repositories
     public interface ISubjectRepository
     {
         Task<Subject> AddSubject(Subject entity);
-        Task<Subject> GetById(int Id);
+        Task<Subject?> GetById(int Id);
+        Task DeleteById(Subject subject);
     }
 }

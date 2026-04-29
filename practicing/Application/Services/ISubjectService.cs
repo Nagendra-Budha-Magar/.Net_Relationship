@@ -6,5 +6,7 @@ namespace practicing.Application.Services
     {
         Task<SubjectDto> AddSubject(SubjectDto dto);
         Task<SubjectDto> GetById(int Id);
+        Task<bool> DeleteById(int Id);
+        
     }
 }

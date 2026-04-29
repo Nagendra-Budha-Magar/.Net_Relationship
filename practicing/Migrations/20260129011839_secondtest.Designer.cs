@@ -12,7 +12,7 @@ namespace practicing.Migrations
 {
     [DbContext(typeof(AppDbContext))]
     [Migration("20260129011839_secondtest")]
-    partial class secondtest
+    partial class Secondtest
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

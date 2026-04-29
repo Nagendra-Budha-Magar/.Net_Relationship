@@ -33,18 +33,13 @@ namespace practicing.Controllers
             return Ok(result);
         }
 
-
-        //[HttpDelete]
-        //[Route("{Id:int}")]
-        //public async Task<IActionResult> Delete(int Id)
-        //{
-        //    var data = await _context.Subjects.FindAsync(Id);
-        //    if (data is null)
-        //        return NotFound();
-        //    _context.Subjects.Remove(data);
-        //    await _context.SaveChangesAsync();
-
-        //    return Ok("Deleted Successfully");
-        //}
+        [HttpDelete]
+        [Route("{Id:int}")]
+        public async Task<IActionResult> DeleteById(int Id)
+        {
+            await _service.GetById(Id);
+            await _service.DeleteById(Id);
+            return Ok("Subject successfully deleted");
+        }
     }
 }

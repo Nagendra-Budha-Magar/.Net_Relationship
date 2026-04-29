@@ -38,5 +38,16 @@ namespace practicing.Application.Services
             };
             return subject;
         }
+
+        public async Task<bool> DeleteById(int Id)
+        {
+            var result = await _repository.GetById(Id);
+            if (result == null)
+                return false;
+
+            await _repository.DeleteById(result);
+            return true;
+
+        }
     }
 }

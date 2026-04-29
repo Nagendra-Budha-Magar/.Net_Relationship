@@ -19,10 +19,17 @@ namespace practicing.Application.Repositories
             return entity;
         }
 
-        public async Task<Subject> GetById(int Id)
+        public async Task<Subject?> GetById(int Id)
         {
-            return  await _context.Subjects.FindAsync(Id);
+            return await _context.Subjects.FindAsync(Id);
 
+        }
+        
+        public async Task DeleteById(Subject subject)
+        {
+
+            _context.Subjects.Remove(subject);
+            await _context.SaveChangesAsync();
         }
     }
 }
