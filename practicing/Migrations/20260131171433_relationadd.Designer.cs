@@ -12,7 +12,7 @@ namespace practicing.Migrations
 {
     [DbContext(typeof(AppDbContext))]
     [Migration("20260131171433_relationadd")]
-    partial class relationadd
+    partial class Relationadd
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

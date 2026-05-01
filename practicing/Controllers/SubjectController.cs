@@ -30,6 +30,19 @@ namespace practicing.Controllers
         public async Task<IActionResult> GetSubject(int Id)
         {
             var result = await _service.GetById(Id);
+            if (result is null)
+                return NotFound($"Subjwct with {Id} not Found");
+            return Ok(result);
+        }
+
+        [HttpPut]
+        [Route("{Id:int}")]
+        public async Task<IActionResult> UpdateSubject(int Id, SubjectDto dto)
+        {
+            var result = await _service.UpdateSubject(Id, dto);
+            if (result is null)
+                return NotFound($"Subject with {Id} not found");
+
             return Ok(result);
         }
 

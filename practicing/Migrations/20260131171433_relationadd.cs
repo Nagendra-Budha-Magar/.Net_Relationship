@@ -5,7 +5,7 @@
 namespace practicing.Migrations
 {
     /// <inheritdoc />
-    public partial class relationadd : Migration
+    public partial class Relationadd : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

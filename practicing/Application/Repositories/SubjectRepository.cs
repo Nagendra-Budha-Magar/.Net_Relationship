@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http.HttpResults;
 using practicing.Data;
+using practicing.Domain.Dtos;
 using practicing.Domain.Entity;
 
 namespace practicing.Application.Repositories
@@ -23,6 +24,12 @@ namespace practicing.Application.Repositories
         {
             return await _context.Subjects.FindAsync(Id);
 
+        }
+
+        public async Task UpdateById(Subject subject)
+        {
+            _context.Subjects.Update(subject);
+            await _context.SaveChangesAsync();
         }
         
         public async Task DeleteById(Subject subject)
